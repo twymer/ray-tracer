@@ -1,8 +1,29 @@
-Tyler Wymer
-CSE 681
-Lab 5
+Ray tracer for a graphics class I took as a senior.
 
-Included test file:
+This is very unpolished C++ code produced by me years ago.
+
+I'm proud of the project, not of the code quality.
+
+To run this:
+make
+./lab6 scenes/some_scene_file.txt
+convert -quality 100 output.ppm output.jpg
+open output.jpg
+
+Some of the features include:
+  - Reflections
+  - Glossiness
+  - Refractions (sort of)
+  - Translucency
+  - Several types of lighting (point, directional, spot)
+  - Depth of field view
+  - Anti-aliasing
+  - Textures
+  - Shadows (soft and hard)
+  - Concave/convex triangulated polyhedra
+  - Phong smooth shading
+
+Description of some of the included scene files:
 
 flat.txt:
     Standard cuboid, flat shaded.
@@ -22,4 +43,3 @@ concaveshadow.txt:
     This file is similar to concave.txt but I wanted
     to submit a clear demonstration of concave objects
     casting shadoow on themselves.
-
