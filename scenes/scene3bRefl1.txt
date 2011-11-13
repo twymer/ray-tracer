@@ -1,0 +1,46 @@
+# 3 spheres; 1 reflective
+
+camera 
+0.0 0.0 30.0 
+5.0 0.0 0.0 
+30.0 1.0 
+1.0 100.0 
+0.0 
+400 400
+
+light -20.0 00.0 0.0 0.4 0.0
+light  00.0 50.0 50.0 0.6 0.0
+ambient 0.2
+background  0.4 0.2 0.2
+
+output output3bRefl1.ppm
+
+# identity
+translate 0.0 -1.0 0.0
+scale 50.0 50.0 50.0
+sphere  0.8 0.2 0.2   none
+0.5 
+0.3 5
+0.6 0.0 
+0.0 0.0 0.0
+
+identity
+translate 0.0 1.0 0.0
+scale 8.0 8.0 8.0
+sphere  0.3 0.8 0.2  none
+0.5 
+0.3  2
+0.0 0.0
+0.0 0.0 0.0
+
+identity
+translate 0.0 1.0 0.0
+scale 4.0 4.0 4.0
+translate 5.0 0.0 10.0
+sphere 0.6 0.6 0.6  none 
+0.4 
+0.9  10
+0.0 0.0
+0.0 0.0 0.0
+
+

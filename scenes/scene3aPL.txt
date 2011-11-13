@@ -1,0 +1,48 @@
+# recursive ray tracing
+# point light source
+
+
+camera 
+0.0 10.0 15.0 
+0.0 0.0 0.0 
+30.0 1.0 
+1.0 100.0 
+0.0 
+200 200
+
+outputFilename output3aPL.ppm
+
+ambient 0.2
+backgroundColor  0.4 0.2 0.2
+
+light 
+-2.0  10.0   5.0   
+0.8  0.0
+
+
+identity
+translate -2.0 5.0 5.0
+sphere  0.8 0.2 0.2   none
+0.5 
+0.3 5
+0.0 0.0 
+0.0 0.0 0.0
+
+identity
+translate 2.0 2.0 5.0
+sphere  0.8 0.2 0.2   none
+0.5 
+0.3 5
+0.0 0.0 
+0.0 0.0 0.0
+
+identity
+translate 0.0 -1.0 0.0
+scale 40.0 40.0 40.0
+sphere  0.3 0.8 0.2  none
+0.5 
+0.3  2
+0.0 0.0
+0.0 0.0 0.0
+
+

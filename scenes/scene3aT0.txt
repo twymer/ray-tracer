@@ -1,0 +1,45 @@
+# recursive ray tracing
+# directional light source with tilt = 0
+
+camera 
+0.0 0.0 15.0 
+0.0 1.0 0.0 
+30.0 1.0 
+1.0 100.0 
+0.0 
+200 200
+
+output output3aT0.ppm
+
+ambient 0.2
+background  0.4 0.2 0.2
+
+dlight 0.0 -50.0 0.0    0.8
+
+
+identity
+translate -2.0 5.0 5.0
+sphere  0.8 0.2 0.2   none
+0.5 
+0.3 5
+0.0 0.0 
+0.0 0.0 0.0
+
+identity
+translate 2.0 2.0 5.0
+sphere  0.8 0.2 0.2   none
+0.5 
+0.3 5
+0.0 0.0 
+0.0 0.0 0.0
+
+identity
+translate 0.0 -1.0 0.0
+scale 20.0 20.0 20.0
+sphere  0.3 0.8 0.2  none
+0.5 
+0.3  2
+0.0 0.0
+0.0 0.0 0.0
+
+

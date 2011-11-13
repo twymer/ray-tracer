@@ -1,0 +1,82 @@
+# add non-uniform scaling to transformations
+# add cubes
+# add solid and surface texturing
+
+camera 
+0.0 2.0 25.0 
+0.0 0.0 0.0 
+20.0 1.0 
+1.0 100.0 
+0.0 
+1000 600
+# 1250 750
+
+glossRays 2
+shadowRays 3
+# glossRays 3
+# shadowRays 6
+# aa 16
+# focalLength aperature focusDistance
+lens 5.0 0.07 11
+
+
+light 0.0 10.0  50.0      1.8    6.0
+light  00.0 20.0 0.0      1.5   5.0
+ambient 0.2
+background  0.4 0.4 0.4
+
+output lab4c.ppm
+
+identity
+rotate x 30
+rotate y 20
+scale .5 1 1
+translate -2 2 18
+cube .5 .5 .5 buzz
+.6
+0 0
+0 0
+0 0 0
+
+identity
+rotate z 45
+scale .5 1 1
+translate 0 2 13
+cube .5 .5 .5 buzz
+.6
+0 0
+0 0
+0 0 0
+
+identity
+rotate z -10
+scale .5 1 1
+translate 3 2 2
+cube .5 .5 .5 buzz
+.6
+0 0
+0 0
+0 0 0
+
+
+identity
+rotate z -20
+rotate y -40
+scale .5 1 1
+translate 8 2 -4
+cube .5 .5 .5 buzz
+.6
+0 0
+0 0
+0 0 0
+
+# CUBE  - non-uniform scale, reflective, surface texture
+identity
+scale 25.0 1.0 25.0
+translate 0.0 -1.0 0.0
+cube 0.2 0.2 0.8 checker  
+0.3 
+0.0 0
+.2 2.0
+0.0 0.0 0.0
+

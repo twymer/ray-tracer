@@ -1,0 +1,25 @@
+Tyler Wymer
+CSE 681
+Lab 5
+
+Included test file:
+
+flat.txt:
+    Standard cuboid, flat shaded.
+
+smooth.txt:
+    Smoothed version of flat.txt.
+
+checkers.txt:
+    Shows a simple texture (checkers) applied to a 
+    triangulated object as well as a non uniform scale and 
+    rotate.
+
+concave.txt:
+    Shows a simple concave polygon.
+
+concaveshadow.txt:
+    This file is similar to concave.txt but I wanted
+    to submit a clear demonstration of concave objects
+    casting shadoow on themselves.
+

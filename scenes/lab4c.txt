@@ -1,0 +1,48 @@
+# add non-uniform scaling to transformations
+# add cubes
+# add solid and surface texturing
+
+camera 
+5.0 10.0 15.0 
+0.0 0.0 0.0 
+20.0 1.0 
+1.0 100.0 
+0.0 
+400 400
+
+light -20.0 10.0  0.0      0.5    0.0
+light  00.0 100.0 50.0      0.5   0.0
+ambient 0.2
+background  0.4 0.2 0.2
+
+output lab4c.ppm
+
+# SPHERE - non-uniform scale, solid texture
+identity
+scale  3.0  1.0  3.0
+translate  0.0  3.0  0.0
+sphere  0.6  0.2  0.5  solid1
+0.3 
+0.6 10
+0.0 0.0
+0.0 0.0 0.0
+
+# CUBE  - non-uniform scale, reflective, surface texture
+identity
+scale 15.0 1.0 15.0
+translate 0.0 -1.0 0.0
+cube 0.0 0.8 0.0 surface1  
+0.3 
+0.0 0
+0.4 0.0
+0.0 0.0 0.0
+
+# CUBE - non-uniform scale, transparent
+identity
+scale 4.0 3.0 2.0
+translate 1.0 4.0 6.0
+cube 0.2 0.2 0.8 none  
+0.3 
+0.0 0
+0.0 0.0
+0.4 1.05 0.0

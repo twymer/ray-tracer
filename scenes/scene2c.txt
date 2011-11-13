@@ -1,0 +1,38 @@
+# diffuse and specular illumination of multiple spheres
+
+camera 
+0.0 0.0 20.0 
+0.0 0.0 0.0 
+45.0 1.0 
+1.0 100.0 
+0.0 
+400 400
+
+light -20.0 0.0 0.0 0.5 0.0
+light  0.0 20.0 50.0 0.7 0.0
+ambient 0.3
+background  0.4 0.2 0.2
+
+output output2c.ppm
+
+scale 5.0 5.0 5.0
+translate -5.0 -5.0 0.0
+sphere  0.8 0.2 0.2  none  0.7     0.3 15     0.0  0.0      0.0  0.0  0.0
+
+identity
+scale 20.0 20.0 20.0
+translate 10.0  -5.0  -20.0
+sphere 0.3 0.8 0.5  none   0.4  0.5  4   0.0  0.0   0.0  0.0  0.0
+
+identity
+scale 15.0 15.0 10.0
+translate -20.0  10.0  -25.0
+sphere 0.5 0.6 0.2  none   0.4  0.5  40   0.0  0.0   0.0  0.0  0.0
+
+identity
+translate 2.0  -1.0  10.0
+sphere 0.3 0.5 0.6  none   0.4  0.5  0    0.0  0.0   0.0  0.0  0.0
+
+identity
+translate -2.0  2.0  10.0
+sphere 0.5 0.5 0.6  none   0.4  0.5  0    0.0  0.0   0.0  0.0  0.0
