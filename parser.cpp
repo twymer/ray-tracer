@@ -21,26 +21,26 @@ int* readPPM(){
     return values;
 }
 void parseObject(Object* obj){
-            //color
-            inFile>>obj->r;
-            inFile>>obj->g;
-            inFile>>obj->b;
+    //color
+    inFile>>obj->r;
+    inFile>>obj->g;
+    inFile>>obj->b;
 
-            //other stuff
-            inFile>>obj->tex;
-            inFile>>obj->kd;
-            inFile>>obj->ks;
-            inFile>>obj->n;
-            inFile>>obj->kr;
-            //gl not used
-            inFile>>obj->gl;
-            inFile>>obj->kt;
-            inFile>>obj->n1;
-            //tr not used
-            inFile>>obj->tr;
+    //other stuff
+    inFile>>obj->tex;
+    inFile>>obj->kd;
+    inFile>>obj->ks;
+    inFile>>obj->n;
+    inFile>>obj->kr;
+    //gl not used
+    inFile>>obj->gl;
+    inFile>>obj->kt;
+    inFile>>obj->n1;
+    //tr not used
+    inFile>>obj->tr;
 
-            m_copy(obj->trans, cm);
-            m_copy(obj->inverse, im);
+    m_copy(obj->trans, cm);
+    m_copy(obj->inverse, im);
 }
 void parse(Scene &scene, char* name){
     //im is the inverse matrix.. if we incrementally
@@ -72,19 +72,19 @@ void parse(Scene &scene, char* name){
         } else if (s.compare("cube")==0) {
             scene.objects[scene.numObjects] = new Object;
             parseObject(scene.objects[scene.numObjects]);
-            
+
             scene.objects[scene.numObjects]->type=CUBE;
             scene.numObjects++;
         } else if (s.compare("sphere")==0) {
             scene.objects[scene.numObjects] = new Object;
             parseObject(scene.objects[scene.numObjects]);
-            
+
             scene.objects[scene.numObjects]->type=SPHERE;
             scene.numObjects++;
         } else if (s.compare("triangles")==0) {
             scene.objects[scene.numObjects] = new Object;
             parseObject(scene.objects[scene.numObjects]);
-            
+
             scene.objects[scene.numObjects]->type=TRIANGLES;
             scene.objects[scene.numObjects]->triangles = new Triangles;
             inFile>>scene.objects[scene.numObjects]->triangles->radius;
@@ -116,31 +116,31 @@ void parse(Scene &scene, char* name){
                 scene.objects[scene.numObjects]->triangles->smooth=1;
             else
                 scene.objects[scene.numObjects]->triangles->smooth=0;
-                
+
             scene.numObjects++;
         } else if (s.compare("light")==0){
             PointLight* pl = new PointLight;
-            
+
             inFile>>pl->pos[0];
             inFile>>pl->pos[1];
             inFile>>pl->pos[2];
             inFile>>pl->i;
             inFile>>pl->size;
-            
+
             scene.lights[scene.numLights] = new Light;
             scene.lights[scene.numLights]->type = POINT;
             scene.lights[scene.numLights]->li = pl;
             /*
-            inFile>>scene.lights[scene.numLights].pos[0];
-            inFile>>scene.lights[scene.numLights].pos[1];
-            inFile>>scene.lights[scene.numLights].pos[2];
-            inFile>>scene.lights[scene.numLights].i;
-            inFile>>scene.lights[scene.numLights].f;
-            */
+               inFile>>scene.lights[scene.numLights].pos[0];
+               inFile>>scene.lights[scene.numLights].pos[1];
+               inFile>>scene.lights[scene.numLights].pos[2];
+               inFile>>scene.lights[scene.numLights].i;
+               inFile>>scene.lights[scene.numLights].f;
+               */
             scene.numLights++;
         } else if (s.compare("slight")==0){
             SpotLight* sl = new SpotLight;
-            
+
             inFile>>sl->pos[0];
             inFile>>sl->pos[1];
             inFile>>sl->pos[2];

@@ -1,6 +1,6 @@
 #include "lab6.h"
 #include <stdio.h>
-
+#include <cstdlib>
 
 void printFace(Triangles* t, face f){
     printf("face: %d %d %d\n" , f[0], f[1],f[2]);

@@ -10,6 +10,7 @@
 #include <math.h>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 #include "lab6.h"
 
@@ -38,10 +39,10 @@ void set_cam(){
 
 float shadowRay(Ray r){
     float scale=1;
-        vector bump;
-        v_normalize(r.d);
-        v_copy(bump,r.d);
-        v_scale(bump,bump,.001);
+    vector bump;
+    v_normalize(r.d);
+    v_copy(bump,r.d);
+    v_scale(bump,bump,.001);
     for(int i=0; i<scene.numObjects; i++){
         HitData* hd = new HitData;
         Ray tRay;
@@ -81,90 +82,90 @@ float shadowRay(Ray r){
     return scale;
 }
 /*
-HitData* closestObject(Ray r){
-    HitData* hd = new HitData;
-    HitData* hdTemp = new HitData;
-    hd->t_world = scene.cam.yon;
-    vector temp;
-    for(int i=0; i<scene.numObjects; i++){
-        bool hit=false;
-        Ray tRay;
-        //bump ray before transformation
-        vector bump;
-        v_normalize(r.d);
-        v_copy(bump,r.d);
-        v_scale(bump,bump,.01);
-        v_add(tRay.o, r.o, bump);
-        //conver ray to object space
-        //TODO: r/p
-        tRay.o[3]=1;
-        r.d[3]=0;
-        mv_mult(tRay.o, scene.objects[i]->inverse, tRay.o);
-        mv_mult(tRay.d, scene.objects[i]->inverse, r.d);
-        tRay.o[3]=1;
-        tRay.d[3]=0;
-        v_normalize(tRay.d);
+   HitData* closestObject(Ray r){
+   HitData* hd = new HitData;
+   HitData* hdTemp = new HitData;
+   hd->t_world = scene.cam.yon;
+   vector temp;
+   for(int i=0; i<scene.numObjects; i++){
+   bool hit=false;
+   Ray tRay;
+//bump ray before transformation
+vector bump;
+v_normalize(r.d);
+v_copy(bump,r.d);
+v_scale(bump,bump,.01);
+v_add(tRay.o, r.o, bump);
+//conver ray to object space
+//TODO: r/p
+tRay.o[3]=1;
+r.d[3]=0;
+mv_mult(tRay.o, scene.objects[i]->inverse, tRay.o);
+mv_mult(tRay.d, scene.objects[i]->inverse, r.d);
+tRay.o[3]=1;
+tRay.d[3]=0;
+v_normalize(tRay.d);
 
-        switch (scene.objects[i]->type){
-            case SPHERE:
-                hit = intersectSphere(tRay,hdTemp);
-                break;
-            case CUBE:
-                hit = intersectCube(tRay,hdTemp);
-                break;
-            case TRIANGLES:
-                hit = intersectTriangles(tRay,hdTemp,scene.objects[i]->triangles);
-        }
-        if(hit && hdTemp->external==1){
-            //calculate world space t
-            vector tVec;
-            v_scale(tVec,tRay.d,hdTemp->t_obj);
-            tVec[3]=0;
-            mv_mult(tVec, scene.objects[i]->trans, tVec);
-            //d1v_print(tVec);
-            hdTemp->t_world=v_length(tVec);
-        //    hdTemp->t_world=hdTemp->t_obj;
-            //d1printf("tworld: %f\n",hdTemp->t_world);
-            if(hdTemp->t_world < hd->t_world && hdTemp->t_world > 0.00){
-                hdTemp->index=i;
-		//hd = new HitData;
-                delete hd;
-                hd=hdTemp;
-            } else {
-                //if the new object is not closer
-                //and hdTemp != hd
-                if(hd != hdTemp){
-                    delete hdTemp;
-                    hdTemp = new HitData;
-                }
-            }
-        }
-        
-    }
-    if(hd != hdTemp){
-        delete hdTemp;
-    }
-    if(hd->index<0) return hd;
-    //Now we need to calculate some world space info for this
-    //intersection
-    
+switch (scene.objects[i]->type){
+case SPHERE:
+hit = intersectSphere(tRay,hdTemp);
+break;
+case CUBE:
+hit = intersectCube(tRay,hdTemp);
+break;
+case TRIANGLES:
+hit = intersectTriangles(tRay,hdTemp,scene.objects[i]->triangles);
+}
+if(hit && hdTemp->external==1){
+//calculate world space t
+vector tVec;
+v_scale(tVec,tRay.d,hdTemp->t_obj);
+tVec[3]=0;
+mv_mult(tVec, scene.objects[i]->trans, tVec);
+//d1v_print(tVec);
+hdTemp->t_world=v_length(tVec);
+//    hdTemp->t_world=hdTemp->t_obj;
+//d1printf("tworld: %f\n",hdTemp->t_world);
+if(hdTemp->t_world < hd->t_world && hdTemp->t_world > 0.00){
+hdTemp->index=i;
+//hd = new HitData;
+delete hd;
+hd=hdTemp;
+} else {
+//if the new object is not closer
+//and hdTemp != hd
+if(hd != hdTemp){
+delete hdTemp;
+hdTemp = new HitData;
+}
+}
+}
 
-    //world point
-    //world normal
-    matrix normalMat;
-    m_transpose(normalMat, scene.objects[hd->index]->inverse);
-    mv_mult(hd->normal_world, normalMat, hd->normal_obj);
-    hd->normal_world[3]=0;
-    v_normalize(hd->normal_world);
+}
+if(hd != hdTemp){
+delete hdTemp;
+}
+if(hd->index<0) return hd;
+//Now we need to calculate some world space info for this
+//intersection
 
-    v_scale(hd->point_world, r.d, hd->t_world);
-    v_add(hd->point_world, hd->point_world, r.o);
 
-    return hd;
+//world point
+//world normal
+matrix normalMat;
+m_transpose(normalMat, scene.objects[hd->index]->inverse);
+mv_mult(hd->normal_world, normalMat, hd->normal_obj);
+hd->normal_world[3]=0;
+v_normalize(hd->normal_world);
+
+v_scale(hd->point_world, r.d, hd->t_world);
+v_add(hd->point_world, hd->point_world, r.o);
+
+return hd;
 }
 */
 HitData* closestObject(Ray r){
-    HitData* hd = new HitData;
+    HitData* hd;
     int objectNum = -1;
     hd->t_world = scene.cam.yon;
     vector temp;
@@ -206,16 +207,16 @@ HitData* closestObject(Ray r){
             mv_mult(tVec, scene.objects[i]->trans, tVec);
             //d1v_print(tVec);
             hdTemp->t_world=v_length(tVec);
-        //    hdTemp->t_world=hdTemp->t_obj;
+            //    hdTemp->t_world=hdTemp->t_obj;
             //d1printf("tworld: %f\n",hdTemp->t_world);
             if(hdTemp->t_world < hd->t_world && hdTemp->t_world > 0.00){
                 objectNum=i;
-           //     delete hd;
+                //     delete hd;
                 *hd=*hdTemp;
             }
         }
         delete hdTemp;
-        
+
     }
     if(objectNum<0){
         hd->index = objectNum;
@@ -223,7 +224,7 @@ HitData* closestObject(Ray r){
     }
     //Now we need to calculate some world space info for this
     //intersection
-    
+
 
     //world point
     //world normal
@@ -343,7 +344,7 @@ bool shade(Ray r, int depth, vector color){
         }
         float kr = scene.objects[objectHit]->kr;
         float kt = scene.objects[objectHit]->kt;
-		float gl = scene.objects[objectHit]->gl;
+        float gl = scene.objects[objectHit]->gl;
 
         //reflection!
         if(kr>0 && depth < RECURSEDEPTH){
@@ -401,16 +402,16 @@ bool shade(Ray r, int depth, vector color){
                 color[2]+=reflectColor[2];
             }
             /*
-            if(depth==0){
-                color[0]+=reflectColor[0]*kr;
-                color[1]+=reflectColor[1]*kr;
-                color[2]+=reflectColor[2]*kr;
-            } else { 
-                color[0]+=reflectColor[0];
-                color[1]+=reflectColor[1];
-                color[2]+=reflectColor[2];
-            }*/
-//            printf("color: %f %f %f\n",color[0],color[1],color[2]);
+               if(depth==0){
+               color[0]+=reflectColor[0]*kr;
+               color[1]+=reflectColor[1]*kr;
+               color[2]+=reflectColor[2]*kr;
+               } else { 
+               color[0]+=reflectColor[0];
+               color[1]+=reflectColor[1];
+               color[2]+=reflectColor[2];
+               }*/
+            //            printf("color: %f %f %f\n",color[0],color[1],color[2]);
         }
         if(kt>0 && depth < RECURSEDEPTH){
             DELME=true;
@@ -433,17 +434,17 @@ bool shade(Ray r, int depth, vector color){
                 //color[2]=0;
             }
             /*
-            float cosTheta1 = -v_dot(test,norm);
-            float sinTheta1 = sqrt(1-cosTheta1*cosTheta1);
-            float sinTheta2 = n1*sinTheta1/n2;
-            */
+               float cosTheta1 = -v_dot(test,norm);
+               float sinTheta1 = sqrt(1-cosTheta1*cosTheta1);
+               float sinTheta2 = n1*sinTheta1/n2;
+               */
             float cosTheta2 = 1-(n1/n2)*(n1/n2)*(1-(v_dot(test,norm)*v_dot(test,norm)));
             if(cosTheta2>=0){
                 cosTheta2=sqrt(cosTheta2);
                 vector T;
                 vector temp;
                 v_scale(T, test, n1/n2);
-                 
+
                 v_scale(temp, norm, v_dot(test,norm)*n1/n2);
                 v_subtract(T, T, temp);
                 v_scale(temp, norm, cosTheta2);
@@ -454,38 +455,38 @@ bool shade(Ray r, int depth, vector color){
                 v_copy(rT.o, hd->point_world);
                 float refractColor[3]={0,0,0};
                 shade(rT, depth+1, refractColor);
-                    color[0]=(1-kt)*color[0] + refractColor[0]*kt;
-                    color[1]=(1-kt)*color[1] + refractColor[1]*kt;
-                    color[2]=(1-kt)*color[2] + refractColor[2]*kt;
+                color[0]=(1-kt)*color[0] + refractColor[0]*kt;
+                color[1]=(1-kt)*color[1] + refractColor[1]*kt;
+                color[2]=(1-kt)*color[2] + refractColor[2]*kt;
             }
         }
 
-            
-//Cap color
-/*
-    if(depth==0){
-        for(int i=0;i<3;i++){
-            if(color[i]>1)
-                color[i]=1;
-        }        
-    }
-*/
-//Fade color.. but only at origin of
-//recursion
-//    printf("color: %f %f %f\n",color[0],color[1],color[2]);
-    if(true){  
-        double max=-1;
-        for(int i=0;i<3;i++){
-            if(color[i]>max)
-                max=color[i];
-        }
 
-        if(max>1){
+        //Cap color
+        /*
+           if(depth==0){
+           for(int i=0;i<3;i++){
+           if(color[i]>1)
+           color[i]=1;
+           }        
+           }
+           */
+        //Fade color.. but only at origin of
+        //recursion
+        //    printf("color: %f %f %f\n",color[0],color[1],color[2]);
+        if(true){  
+            double max=-1;
             for(int i=0;i<3;i++){
-                color[i]=color[i]/(max);
+                if(color[i]>max)
+                    max=color[i];
+            }
+
+            if(max>1){
+                for(int i=0;i<3;i++){
+                    color[i]=color[i]/(max);
+                }
             }
         }
-    }
 
     }    
     delete hd;
@@ -504,14 +505,14 @@ int main(int argc, char* argv[]){
     tex = readPPM();
     parse(scene,argv[1]); 
     set_cam(); 
-    
+
     std::ofstream outFile;
-//    outFile.open(scene.outName);
+    //    outFile.open(scene.outName);
     outFile.open("output.ppm");
     outFile << "P3\n";
     outFile << "# Generated by Tyler Wymer's ray tracer.\n";
     outFile << scene.cam.xres << " " << scene.cam.yres << "\n255\n";
-    
+
     vector u,v,w;
     v_subtract(w, scene.cam.coi, scene.cam.pos);
     v_normalize(w);
@@ -525,7 +526,7 @@ int main(int argc, char* argv[]){
     v_cross(v, u, w);
     v_normalize(v);
 
-    
+
     vector scanStart;
     vector pixelCenter;
     //scan start is technicall
@@ -535,8 +536,8 @@ int main(int argc, char* argv[]){
     v_subtract(scanStart, scanStart, temp);
     v_scale(temp, v, scene.cam.yres/2*pixelHeight);
     v_add(scanStart, scanStart, temp);
-    
-            
+
+
     vector pixWidthScaled;
     v_scale(pixWidthScaled, u, pixelWidth);
     vector pixHeightScaled;
@@ -548,15 +549,15 @@ int main(int argc, char* argv[]){
     v_scale(height4, pixHeightScaled, .25);
     v_scale(width8, pixWidthScaled, .125);
     v_scale(height8, pixHeightScaled, .125);
-    
+
     int numPix = scene.cam.yres*scene.cam.xres;
     int perPix=1;
     if(scene.aa)
         perPix=16;
-//    vector colorRow[scene.cam.xres];
-//		std::string outLine = "";
-//        std::stringstream Stream;
-//		Stream.str(outLine);
+    //    vector colorRow[scene.cam.xres];
+    //		std::string outLine = "";
+    //        std::stringstream Stream;
+    //		Stream.str(outLine);
     for(int i=0; i<scene.cam.yres; i++){
         v_copy(pixelCenter, scanStart);
         for(int j=0; j<scene.cam.xres; j++){
@@ -584,7 +585,7 @@ int main(int argc, char* argv[]){
                 v_subtract(aaCenter, pixelCenter, width8);
                 v_add(aaCenter,pixelCenter, height4);
                 v_add(aaCenter,pixelCenter, height8);
-                
+
                 for(int i=0; i<4; i++){
                     for(int j=0; j<4; j++){
                         vector jCenter, temp;
@@ -595,7 +596,7 @@ int main(int argc, char* argv[]){
                         v_add(jCenter, aaCenter, temp);
                         v_scale(temp, pixHeightScaled, sy);
                         v_add(jCenter, aaCenter, temp);
-                        
+
                         v_copy(r.d,jCenter);
                         shade(r,0,colors[i*j]);
                         v_add(finalColor,finalColor,colors[i*j]);
@@ -606,35 +607,35 @@ int main(int argc, char* argv[]){
                 }
                 v_scale(finalColor,finalColor,.0625);
             }
-                    
+
             outFile << (int)(finalColor[0]*255);
             outFile << " ";
             outFile << (int)(finalColor[1]*255);
             outFile << " ";
             outFile << (int)(finalColor[2]*255);
             outFile << " \n";
-                
-//            v_copy(colorRow[j],finalColor);
+
+            //            v_copy(colorRow[j],finalColor);
 
             v_add(pixelCenter, pixWidthScaled, pixelCenter);
-            
+
         }
-//        for(int k=0; k<scene.cam.xres; k++){
-//            outFile << (int)(colorRow[k][0]*255);
-//           outFile << " ";
-//            outFile << (int)(colorRow[k][1]*255);
-//            outFile << " ";
-//            outFile << (int)(colorRow[k][2]*255);
-//            outFile << " \n";
-//        }
-//        outLine = Stream.str();
-//		outFile << outLine << "\n";
-        
+        //        for(int k=0; k<scene.cam.xres; k++){
+        //            outFile << (int)(colorRow[k][0]*255);
+        //           outFile << " ";
+        //            outFile << (int)(colorRow[k][1]*255);
+        //            outFile << " ";
+        //            outFile << (int)(colorRow[k][2]*255);
+        //            outFile << " \n";
+        //        }
+        //        outLine = Stream.str();
+        //		outFile << outLine << "\n";
+
         v_subtract(scanStart,scanStart, pixHeightScaled);
-        
+
     }
 
-    free(tex);
-	printf("done!\n");
-        
+    delete[](tex);
+    printf("done!\n");
+
 }

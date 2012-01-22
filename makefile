@@ -1,7 +1,10 @@
 #Performance running
-BITTINESS = -m32
-GXX = g++ ${BITTINESS}
+GXX = g++
 CFLAGS=-O3
+
+# If on 64bit OSX:
+# BITTINESS = -m32
+# GXX = g++ ${BITTINESS}
 
 #debug
 #CFLAGS=-g
